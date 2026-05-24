@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ATM Machine</title>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="script.js"></script>
+
+<style>
+
+body{
+font-family: Arial;
+text-align:center;
+margin-top:80px;
+}
+
+.atm{
+width:300px;
+margin:auto;
+padding:20px;
+border:1px solid rgb(128, 128, 128);
+border-radius:10px;
+}
+
+button{
+padding:8px 15px;
+margin:5px;
+cursor:pointer;
+}
+
+input{
+padding:8px;
+margin:10px;
+width:80%;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="atm">
+
+<h2>ATM Machine</h2>
+
+<h3>
+Balance: ₹ <span id="balance">****</span>
+<span id="eyeIcon" style="cursor:pointer;">👁</span>
+</h3>
+
+<button id="depositBtn">Deposit</button>
+<button id="withdrawBtn">Withdraw</button>
+
+<div id="depositBox" style="display:none;">
+<h4>Deposit Amount</h4>
+<input type="number" id="num1" placeholder="Enter amount">
+<br>
+<button onclick="Deposit()">Confirm Deposit</button>
+</div>
+
+<div id="withdrawBox" style="display:none;">
+<h4>Withdraw Amount</h4>
+<input type="number" id="num2" placeholder="Enter amount">
+<br>
+<button onclick="Withdraw()">Confirm Withdraw</button>
+</div>
+
+</div>
+
+</body>
+</html>
