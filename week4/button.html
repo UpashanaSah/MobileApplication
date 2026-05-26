@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>jQuery Card Color Change</title>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      width: 300px;
+      padding: 20px;
+      border-radius: 16px;
+      background: lightblue;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: background 0.4s ease;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: black;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <h2>Interactive Card</h2>
+    <p>Click the button to change the card color.</p>
+    <button id="changeColor">Change Color</button>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      const colors = [
+        "lightblue",
+        "lightgreen",
+        "lightcoral",
+        "lightpink",
+        "khaki",
+        "plum"
+      ];
+
+      $("#changeColor").click(function () {
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        $("#card").css("background", randomColor);
+      });
+    });
+  </script>
+</body>
+</html>
