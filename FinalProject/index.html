@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusVenture — Business Innovation Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="page-login">
+
+<!-- ===================== AUTH PAGES ===================== -->
+<div id="auth-overlay" class="auth-overlay active">
+  <div class="auth-bg-art">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-lines"></div>
+  </div>
+  <div class="auth-container">
+    <div class="auth-brand">
+      <span class="brand-icon">⬡</span>
+      <span class="brand-name">NexusVenture</span>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-form" class="auth-card active">
+      <h2 class="auth-title">Welcome back</h2>
+      <p class="auth-subtitle">Sign in to your business network</p>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="login-email" placeholder="you@company.com" class="form-input">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" class="form-input">
+      </div>
+      <button class="btn-primary full-width" id="login-btn">Sign In</button>
+      <p class="auth-switch">Don't have an account? <a href="#" id="go-register">Create one →</a></p>
+      <div class="demo-hint">Demo: use any email + password</div>
+    </div>
+
+    <!-- Register Form -->
+    <div id="register-form" class="auth-card">
+      <h2 class="auth-title">Join NexusVenture</h2>
+      <p class="auth-subtitle">Build your professional network</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="reg-name" placeholder="Alex Johnson" class="form-input">
+        </div>
+        <div class="form-group">
+          <label>Job Title</label>
+          <input type="text" id="reg-title" placeholder="CEO / Founder" class="form-input">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="reg-email" placeholder="you@company.com" class="form-input">
+      </div>
+      <div class="form-group">
+        <label>Business Sector</label>
+        <select class="form-input" id="reg-sector">
+          <option value="">Select your sector</option>
+          <option>Technology</option>
+          <option>Finance</option>
+          <option>E-commerce</option>
+          <option>Marketing</option>
+          <option>Real Estate</option>
+          <option>Manufacturing</option>
+          <option>Startups</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="••••••••" class="form-input">
+      </div>
+      <button class="btn-primary full-width" id="register-btn">Create Account</button>
+      <p class="auth-switch">Already have an account? <a href="#" id="go-login">Sign in →</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MAIN APP ===================== -->
+<div id="app" class="app hidden">
+
+  <!-- TOP NAV -->
+  <header class="topnav">
+    <div class="topnav-left">
+      <button class="sidebar-toggle" id="sidebar-toggle">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="brand">
+        <span class="brand-icon">⬡</span>
+        <span class="brand-name">NexusVenture</span>
+      </div>
+    </div>
+    <div class="topnav-center">
+      <div class="search-bar">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="global-search" placeholder="Search professionals, ideas, discussions…">
+      </div>
+    </div>
+    <div class="topnav-right">
+      <button class="nav-icon-btn" id="notif-btn">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="badge" id="notif-badge">3</span>
+      </button>
+      <button class="nav-icon-btn" id="msg-nav-btn">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="badge">2</span>
+      </button>
+      <div class="user-avatar-nav" id="profile-nav-btn">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4" alt="User">
+      </div>
+    </div>
+  </header>
+
+  <!-- NOTIFICATION DROPDOWN -->
+  <div class="notif-dropdown hidden" id="notif-dropdown">
+    <div class="notif-header">
+      <span>Notifications</span>
+      <button class="mark-all-read">Mark all read</button>
+    </div>
+    <div class="notif-list">
+      <div class="notif-item unread">
+        <div class="notif-avatar"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah&backgroundColor=c0aede" alt=""></div>
+        <div class="notif-text"><strong>Sarah Chen</strong> commented on your post about SaaS pricing strategy.</div>
+        <div class="notif-time">2m ago</div>
+      </div>
+      <div class="notif-item unread">
+        <div class="notif-avatar"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus&backgroundColor=d1d4f9" alt=""></div>
+        <div class="notif-text"><strong>Marcus Reid</strong> wants to connect with you.</div>
+        <div class="notif-time">1h ago</div>
+      </div>
+      <div class="notif-item unread">
+        <div class="notif-avatar"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Priya&backgroundColor=ffd5dc" alt=""></div>
+        <div class="notif-text"><strong>Priya Mehta</strong> upvoted your idea in Innovation Hub.</div>
+        <div class="notif-time">3h ago</div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-avatar"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=James&backgroundColor=b6e3f4" alt=""></div>
+        <div class="notif-text"><strong>James Wu</strong> liked your post.</div>
+        <div class="notif-time">1d ago</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-page="dashboard">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-page="feed">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Community Feed</span>
+        </a>
+        <a href="#" class="nav-item" data-page="innovation">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+          <span>Innovation Hub</span>
+        </a>
+        <a href="#" class="nav-item" data-page="advisors">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Advisors</span>
+        </a>
+        <a href="#" class="nav-item" data-page="network">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M6.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/><path d="M17.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/><path d="M12 8v13"/><path d="M6.5 8c0 3.5 1.5 5 5.5 5"/><path d="M17.5 8c0 3.5-1.5 5-5.5 5"/></svg>
+          <span>Network</span>
+        </a>
+        <a href="#" class="nav-item" data-page="messages">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span>Messages</span>
+        </a>
+        <a href="#" class="nav-item" data-page="profile">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>My Profile</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4" alt="User" class="sidebar-avatar">
+          <div>
+            <div class="sidebar-username" id="sidebar-name">Alex Johnson</div>
+            <div class="sidebar-role" id="sidebar-role">Tech Founder</div>
+          </div>
+        </div>
+        <button class="logout-btn" id="logout-btn">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content" id="main-content">
+
+      <!-- ======= DASHBOARD PAGE ======= -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle" id="dash-greeting">Good morning, Alex</p>
+          </div>
+          <button class="btn-primary" id="new-post-btn">+ New Post</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon stat-blue">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-num">247</div>
+              <div class="stat-label">Connections</div>
+            </div>
+            <div class="stat-delta positive">+12 this week</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon stat-gold">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-num">1.4K</div>
+              <div class="stat-label">Post Views</div>
+            </div>
+            <div class="stat-delta positive">+8% this month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon stat-green">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-num">8</div>
+              <div class="stat-label">Ideas Saved</div>
+            </div>
+            <div class="stat-delta positive">+3 new</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon stat-purple">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-num">14</div>
+              <div class="stat-label">My Posts</div>
+            </div>
+            <div class="stat-delta">2 this week</div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="dash-col-main">
+            <div class="card">
+              <div class="card-header">
+                <h3>Trending Discussions</h3>
+                <a href="#" class="card-link" data-page="feed">View all →</a>
+              </div>
+              <div class="trending-list" id="trending-list">
+                <!-- populated by JS -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3>Top Innovations This Week</h3>
+                <a href="#" class="card-link" data-page="innovation">Explore →</a>
+              </div>
+              <div class="innovations-mini" id="innovations-mini"></div>
+            </div>
+          </div>
+
+          <div class="dash-col-side">
+            <div class="card">
+              <div class="card-header"><h3>People to Connect</h3></div>
+              <div class="connect-suggestions" id="connect-suggestions"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><h3>Featured Advisors</h3></div>
+              <div class="advisor-mini" id="advisor-mini"></div>
+            </div>
+
+            <div class="card activity-card">
+              <div class="card-header"><h3>Your Activity</h3></div>
+              <div class="activity-list">
+                <div class="activity-item">
+                  <div class="activity-dot blue"></div>
+                  <div class="activity-text">Posted "Navigating SaaS Churn"</div>
+                  <div class="activity-time">2h ago</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot gold"></div>
+                  <div class="activity-text">Saved innovation "AI-Powered Supply Chain"</div>
+                  <div class="activity-time">1d ago</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot green"></div>
+                  <div class="activity-text">Connected with Marcus Reid</div>
+                  <div class="activity-time">2d ago</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot purple"></div>
+                  <div class="activity-text">Booked consultation with Elena Vasquez</div>
+                  <div class="activity-time">3d ago</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======= COMMUNITY FEED PAGE ======= -->
+      <div class="page" id="page-feed">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Community Feed</h1>
+            <p class="page-subtitle">Ideas, problems, and opportunities — shared openly</p>
+          </div>
+          <button class="btn-primary" id="feed-new-post-btn">+ Share Post</button>
+        </div>
+
+        <div class="feed-layout">
+          <div class="feed-main">
+            <div class="filter-bar">
+              <button class="filter-btn active" data-filter="all">All Posts</button>
+              <button class="filter-btn" data-filter="problem">🔥 Problems</button>
+              <button class="filter-btn" data-filter="idea">💡 Ideas</button>
+              <button class="filter-btn" data-filter="opportunity">🚀 Opportunities</button>
+              <button class="filter-btn" data-filter="question">❓ Questions</button>
+            </div>
+
+            <div class="category-chips">
+              <span class="chip active" data-cat="all">All</span>
+              <span class="chip" data-cat="Technology">Technology</span>
+              <span class="chip" data-cat="Finance">Finance</span>
+              <span class="chip" data-cat="E-commerce">E-commerce</span>
+              <span class="chip" data-cat="Marketing">Marketing</span>
+              <span class="chip" data-cat="Startups">Startups</span>
+              <span class="chip" data-cat="Real Estate">Real Estate</span>
+            </div>
+
+            <div class="posts-feed" id="posts-feed">
+              <!-- populated by JS -->
+            </div>
+          </div>
+
+          <div class="feed-sidebar">
+            <div class="card">
+              <h4 class="sidebar-widget-title">Trending Tags</h4>
+              <div class="tag-cloud" id="tag-cloud"></div>
+            </div>
+            <div class="card">
+              <h4 class="sidebar-widget-title">Active Members</h4>
+              <div class="active-members" id="active-members"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======= INNOVATION HUB PAGE ======= -->
+      <div class="page" id="page-innovation">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Innovation Hub</h1>
+            <p class="page-subtitle">Vote, collaborate, and bring ideas to life</p>
+          </div>
+          <button class="btn-primary" id="submit-idea-btn">+ Submit Idea</button>
+        </div>
+
+        <div class="innovation-tabs">
+          <button class="inn-tab active" data-tab="trending">🔥 Trending</button>
+          <button class="inn-tab" data-tab="new">✨ New</button>
+          <button class="inn-tab" data-tab="collab">🤝 Seeking Collab</button>
+          <button class="inn-tab" data-tab="investment">💰 Seeking Investment</button>
+        </div>
+
+        <div class="innovations-grid" id="innovations-grid"></div>
+      </div>
+
+      <!-- ======= ADVISORS PAGE ======= -->
+      <div class="page" id="page-advisors">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Advisor Directory</h1>
+            <p class="page-subtitle">Find the right expert to accelerate your growth</p>
+          </div>
+        </div>
+
+        <div class="advisor-filters">
+          <button class="adv-filter active" data-adv="all">All Advisors</button>
+          <button class="adv-filter" data-adv="Strategy">Business Strategy</button>
+          <button class="adv-filter" data-adv="Finance">Finance</button>
+          <button class="adv-filter" data-adv="Legal">Legal</button>
+          <button class="adv-filter" data-adv="Marketing">Marketing</button>
+          <button class="adv-filter" data-adv="Startup">Startup Mentor</button>
+          <button class="adv-filter" data-adv="Investment">Investment</button>
+        </div>
+
+        <div class="advisors-grid" id="advisors-grid"></div>
+      </div>
+
+      <!-- ======= NETWORK PAGE ======= -->
+      <div class="page" id="page-network">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">My Network</h1>
+            <p class="page-subtitle">247 connections across 18 industries</p>
+          </div>
+        </div>
+        <div class="network-search">
+          <input type="text" placeholder="Search by name, role, or industry…" class="form-input" id="network-search-input">
+          <select class="form-input network-select" id="network-industry-filter">
+            <option value="">All Industries</option>
+            <option>Technology</option>
+            <option>Finance</option>
+            <option>Marketing</option>
+            <option>E-commerce</option>
+            <option>Real Estate</option>
+          </select>
+        </div>
+        <div class="network-grid" id="network-grid"></div>
+      </div>
+
+      <!-- ======= MESSAGES PAGE ======= -->
+      <div class="page" id="page-messages">
+        <div class="page-header">
+          <h1 class="page-title">Messages</h1>
+        </div>
+        <div class="messages-layout">
+          <div class="convo-list" id="convo-list"></div>
+          <div class="chat-area" id="chat-area">
+            <div class="chat-placeholder">
+              <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <p>Select a conversation to start messaging</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======= PROFILE PAGE ======= -->
+      <div class="page" id="page-profile">
+        <div class="profile-cover">
+          <div class="cover-gradient"></div>
+          <div class="profile-info-block">
+            <div class="profile-avatar-wrap">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4" alt="Profile" class="profile-avatar" id="profile-avatar">
+            </div>
+            <div class="profile-details">
+              <h1 id="profile-name-display">Alex Johnson</h1>
+              <p id="profile-title-display">CEO & Co-founder at NovaTech</p>
+              <div class="profile-tags">
+                <span class="profile-tag">Technology</span>
+                <span class="profile-tag">SaaS</span>
+                <span class="profile-tag">B2B</span>
+              </div>
+            </div>
+            <div class="profile-actions">
+              <button class="btn-primary" id="edit-profile-btn">Edit Profile</button>
+              <button class="btn-outline">Share Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-body">
+          <div class="profile-main">
+            <div class="card profile-about">
+              <h3>About</h3>
+              <p id="profile-bio">Serial entrepreneur with 10+ years building B2B SaaS companies. Passionate about product-led growth, sustainable business models, and team culture. Currently scaling NovaTech's enterprise solution across APAC markets.</p>
+            </div>
+            <div class="card">
+              <h3>Skills & Expertise</h3>
+              <div class="skills-grid">
+                <span class="skill-tag">Product Strategy</span>
+                <span class="skill-tag">B2B Sales</span>
+                <span class="skill-tag">SaaS Metrics</span>
+                <span class="skill-tag">Team Building</span>
+                <span class="skill-tag">Fundraising</span>
+                <span class="skill-tag">Go-to-Market</span>
+                <span class="skill-tag">OKRs</span>
+                <span class="skill-tag">UX Design</span>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Recent Posts</h3>
+              <div id="profile-posts-mini"></div>
+            </div>
+          </div>
+          <div class="profile-side">
+            <div class="card profile-stats-card">
+              <div class="profile-stat"><span class="pstat-num">247</span><span class="pstat-label">Connections</span></div>
+              <div class="profile-stat"><span class="pstat-num">14</span><span class="pstat-label">Posts</span></div>
+              <div class="profile-stat"><span class="pstat-num">8</span><span class="pstat-label">Ideas Saved</span></div>
+            </div>
+            <div class="card">
+              <h4>Company</h4>
+              <div class="company-info">
+                <div class="company-logo">N</div>
+                <div>
+                  <div class="company-name">NovaTech Inc.</div>
+                  <div class="company-stage">Series A · 32 employees</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <h4>Social Links</h4>
+              <div class="social-links">
+                <a href="#" class="social-link">🔗 linkedin.com/in/alexjohnson</a>
+                <a href="#" class="social-link">🐦 @alexjohnson_ceo</a>
+                <a href="#" class="social-link">🌐 novatech.io</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ======= POST MODAL ======= -->
+<div class="modal-overlay hidden" id="post-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Share with the Community</h3>
+      <button class="modal-close" id="close-post-modal">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="post-type-select">
+        <button class="post-type-btn active" data-type="idea">💡 Idea</button>
+        <button class="post-type-btn" data-type="problem">🔥 Problem</button>
+        <button class="post-type-btn" data-type="opportunity">🚀 Opportunity</button>
+        <button class="post-type-btn" data-type="question">❓ Question</button>
+      </div>
+      <input type="text" placeholder="Post title or headline…" class="form-input" id="post-title-input">
+      <textarea placeholder="Share your thoughts, challenges, or ideas with the business community…" class="form-input post-textarea" id="post-content-input"></textarea>
+      <div class="post-meta-row">
+        <select class="form-input post-cat-select" id="post-category-select">
+          <option value="">Select Category</option>
+          <option>Technology</option>
+          <option>Finance</option>
+          <option>E-commerce</option>
+          <option>Marketing</option>
+          <option>Startups</option>
+          <option>Real Estate</option>
+          <option>Manufacturing</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" id="cancel-post-modal">Cancel</button>
+      <button class="btn-primary" id="submit-post-btn">Publish Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= IDEA MODAL ======= -->
+<div class="modal-overlay hidden" id="idea-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Submit Your Innovation</h3>
+      <button class="modal-close" id="close-idea-modal">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="text" placeholder="Idea title…" class="form-input" id="idea-title-input">
+      <textarea placeholder="Describe your innovative idea, the problem it solves, and the market opportunity…" class="form-input post-textarea" id="idea-desc-input"></textarea>
+      <div class="post-meta-row">
+        <select class="form-input" id="idea-stage">
+          <option value="">Stage</option>
+          <option>Concept</option>
+          <option>MVP</option>
+          <option>Beta</option>
+          <option>Launched</option>
+        </select>
+        <select class="form-input" id="idea-looking">
+          <option value="">Looking For</option>
+          <option>Co-founder</option>
+          <option>Investment</option>
+          <option>Collaborators</option>
+          <option>Feedback</option>
+          <option>Nothing yet</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" id="cancel-idea-modal">Cancel</button>
+      <button class="btn-primary" id="submit-idea-form-btn">Submit Idea</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= ADVISOR MODAL ======= -->
+<div class="modal-overlay hidden" id="advisor-modal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3 id="adv-modal-name">Advisor Name</h3>
+      <button class="modal-close" id="close-advisor-modal">×</button>
+    </div>
+    <div class="modal-body" id="advisor-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-outline" id="cancel-advisor-modal">Close</button>
+      <button class="btn-primary">Book Consultation</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= EDIT PROFILE MODAL ======= -->
+<div class="modal-overlay hidden" id="edit-profile-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Edit Profile</h3>
+      <button class="modal-close" id="close-edit-profile">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" class="form-input" id="edit-name" value="Alex Johnson">
+        </div>
+        <div class="form-group">
+          <label>Job Title</label>
+          <input type="text" class="form-input" id="edit-job-title" value="CEO & Co-founder at NovaTech">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Bio</label>
+        <textarea class="form-input post-textarea" id="edit-bio">Serial entrepreneur with 10+ years building B2B SaaS companies. Passionate about product-led growth, sustainable business models, and team culture.</textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Industry</label>
+          <select class="form-input" id="edit-industry">
+            <option selected>Technology</option>
+            <option>Finance</option>
+            <option>E-commerce</option>
+            <option>Marketing</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>LinkedIn</label>
+          <input type="text" class="form-input" id="edit-linkedin" value="linkedin.com/in/alexjohnson">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" id="cancel-edit-profile">Cancel</button>
+      <button class="btn-primary" id="save-profile-btn">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
