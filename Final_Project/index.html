@@ -1,0 +1,2658 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BizConnect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f7f3ec;
+        --surface: #ffffff;
+        --surface-2: #fbf8f2;
+        --text: #1c2333;
+        --text-muted: #80869a;
+        --border: #eae3d4;
+        --accent: #e2a33b;
+        --accent-soft: #fbefd8;
+        --success: #3e7c74;
+        --success-soft: #e1efec;
+        --danger: #d1645a;
+        --tab-inactive: #bfb8a6;
+        --shadow: 0 14px 30px -18px rgba(28, 35, 51, 0.35);
+      }
+      [data-theme="dark"] {
+        --bg: #12161f;
+        --surface: #1c2233;
+        --surface-2: #202842;
+        --text: #f2efe9;
+        --text-muted: #8e96a8;
+        --border: #2e3850;
+        --accent: #e8ae52;
+        --accent-soft: #3a311f;
+        --success: #56a99a;
+        --success-soft: #1e3330;
+        --danger: #e2887e;
+        --tab-inactive: #525d78;
+        --shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.6);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e7e2d6;
+        font-family: "Inter", sans-serif;
+        padding: 28px;
+      }
+      /* ---------- Device frame ---------- */
+      .phone {
+        width: min(390px, 94vw);
+        aspect-ratio: 390/844;
+        background: var(--bg);
+        border-radius: 42px;
+        border: 10px solid #0b0d13;
+        box-shadow:
+          0 36px 70px -28px rgba(0, 0, 0, 0.45),
+          0 0 0 1px rgba(0, 0, 0, 0.06);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition:
+          background 0.35s ease,
+          color 0.35s ease;
+        color: var(--text);
+      }
+      .island {
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 118px;
+        height: 26px;
+        background: #0b0d13;
+        border-radius: 18px;
+        z-index: 60;
+      }
+      .status-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px 4px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        letter-spacing: 0.02em;
+      }
+      .status-bar .right {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+      .status-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--text);
+        opacity: 0.4;
+      }
+      .status-dot.full {
+        opacity: 1;
+      }
+
+      /* ---------- Header ---------- */
+      .app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px 12px;
+      }
+      .app-header .title-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .app-header h1 {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 22px;
+        letter-spacing: -0.01em;
+      }
+      .app-header .subtitle {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+      .header-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text);
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          background 0.2s ease;
+      }
+      .icon-btn:active {
+        transform: scale(0.92);
+      }
+      .icon-btn svg {
+        width: 17px;
+        height: 17px;
+      }
+      .back-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 20px 8px;
+      }
+      .back-row h1 {
+        font-size: 18px;
+      }
+      .back-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        color: var(--text);
+      }
+
+      /* ---------- Screens ---------- */
+      .screens {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+      }
+      .screen {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(6px);
+        transition:
+          opacity 0.18s ease,
+          transform 0.18s ease;
+      }
+      .screen.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        z-index: 2;
+      }
+      .screen-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 4px 20px 110px;
+      }
+      .screen-content::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* ---------- Chips ---------- */
+      .chip-row {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 6px 0 14px;
+      }
+      .chip-row::-webkit-scrollbar {
+        display: none;
+      }
+      .chip {
+        flex: 0 0 auto;
+        padding: 7px 14px;
+        border-radius: 100px;
+        font-size: 12.5px;
+        font-weight: 600;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.15s ease;
+      }
+      .chip.active {
+        background: var(--text);
+        color: var(--bg);
+        border-color: var(--text);
+      }
+
+      /* ---------- Avatars ---------- */
+      .avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 14px;
+        color: #fff;
+        flex: 0 0 auto;
+      }
+      .avatar.sm {
+        width: 34px;
+        height: 34px;
+        font-size: 12px;
+      }
+      .avatar.lg {
+        width: 72px;
+        height: 72px;
+        font-size: 24px;
+      }
+
+      /* ---------- Post cards ---------- */
+      .post-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 14px;
+        box-shadow: var(--shadow);
+      }
+      .post-card .meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .post-card .meta .who {
+        flex: 1;
+        min-width: 0;
+      }
+      .post-card .meta .who .name {
+        font-weight: 600;
+        font-size: 13.5px;
+      }
+      .post-card .meta .who .sub {
+        font-size: 11.5px;
+        color: var(--text-muted);
+      }
+      .post-card .cat-tag {
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--success);
+        background: var(--success-soft);
+        padding: 4px 8px;
+        border-radius: 7px;
+      }
+      .post-card h3 {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 1.35;
+        margin-bottom: 6px;
+      }
+      .post-card p {
+        font-size: 13px;
+        color: var(--text-muted);
+        line-height: 1.55;
+        margin-bottom: 12px;
+      }
+      .post-actions {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        border-top: 1px solid var(--border);
+        padding-top: 10px;
+      }
+      .post-actions button {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-muted);
+        transition: color 0.15s ease;
+      }
+      .post-actions button svg {
+        width: 16px;
+        height: 16px;
+      }
+      .post-actions button.liked {
+        color: var(--danger);
+      }
+      .post-actions button.saved {
+        color: var(--accent);
+      }
+      .post-actions .grow {
+        flex: 1;
+      }
+
+      /* ---------- Search ---------- */
+      .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 11px 14px;
+        margin-bottom: 14px;
+      }
+      .search-bar svg {
+        width: 16px;
+        height: 16px;
+        color: var(--text-muted);
+        flex: 0 0 auto;
+      }
+      .search-bar input {
+        border: none;
+        outline: none;
+        background: none;
+        font-family: "Inter";
+        font-size: 13.5px;
+        color: var(--text);
+        width: 100%;
+      }
+      .search-bar input::placeholder {
+        color: var(--text-muted);
+      }
+
+      /* ---------- Advisor ticket card ---------- */
+      .advisor-card {
+        display: flex;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        margin-bottom: 14px;
+        box-shadow: var(--shadow);
+        cursor: pointer;
+        transition: transform 0.12s ease;
+      }
+      .advisor-card:active {
+        transform: scale(0.98);
+      }
+      .advisor-card .main {
+        flex: 1;
+        padding: 14px;
+        min-width: 0;
+      }
+      .advisor-card .top {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .advisor-card .top .name {
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .advisor-card .top .role {
+        font-size: 11.5px;
+        color: var(--text-muted);
+        margin-top: 1px;
+      }
+      .advisor-card .tags {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      .advisor-card .tag {
+        font-size: 10.5px;
+        font-weight: 600;
+        color: var(--text-muted);
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        padding: 3px 8px;
+        border-radius: 7px;
+      }
+      .advisor-card .rating {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .advisor-card .rating svg {
+        width: 13px;
+        height: 13px;
+        color: var(--accent);
+      }
+      .advisor-card .rating .muted {
+        color: var(--text-muted);
+        font-weight: 400;
+      }
+      .advisor-card .stub {
+        width: 78px;
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        border-left: 1px dashed var(--border);
+        position: relative;
+        padding: 10px 6px;
+      }
+      .advisor-card .stub::before,
+      .advisor-card .stub::after {
+        content: "";
+        position: absolute;
+        left: -7px;
+        width: 14px;
+        height: 14px;
+        background: var(--bg);
+        border-radius: 50%;
+      }
+      .advisor-card .stub::before {
+        top: -7px;
+      }
+      .advisor-card .stub::after {
+        bottom: -7px;
+      }
+      .advisor-card .stub .rate {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        font-size: 15px;
+      }
+      .advisor-card .stub .rate-unit {
+        font-size: 9.5px;
+        color: var(--text-muted);
+      }
+      .advisor-card .stub .book-label {
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-top: 2px;
+      }
+
+      /* ---------- Section labels ---------- */
+      .section-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin: 18px 0 10px;
+      }
+      .section-label:first-child {
+        margin-top: 4px;
+      }
+
+      /* ---------- Advisor detail ---------- */
+      .detail-hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 14px 0 18px;
+      }
+      .detail-hero .avatar {
+        margin-bottom: 10px;
+      }
+      .detail-hero h2 {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 21px;
+      }
+      .detail-hero .role {
+        font-size: 12.5px;
+        color: var(--text-muted);
+        margin-top: 3px;
+      }
+      .detail-stats {
+        display: flex;
+        justify-content: center;
+        gap: 22px;
+        margin: 14px 0 4px;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .detail-stats .stat {
+        text-align: center;
+      }
+      .detail-stats .stat .num {
+        font-size: 16px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        justify-content: center;
+      }
+      .detail-stats .stat .num svg {
+        width: 14px;
+        height: 14px;
+        color: var(--accent);
+      }
+      .detail-stats .stat .lbl {
+        font-size: 10px;
+        color: var(--text-muted);
+        margin-top: 2px;
+        font-family: "Inter";
+      }
+      .bio {
+        font-size: 13px;
+        line-height: 1.65;
+        color: var(--text-muted);
+        margin-bottom: 14px;
+      }
+      .review {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+      }
+      .review .rhead {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+      .review .rhead .rname {
+        font-weight: 600;
+        font-size: 12.5px;
+      }
+      .review .stars {
+        display: flex;
+        gap: 2px;
+      }
+      .review .stars svg {
+        width: 12px;
+        height: 12px;
+        color: var(--accent);
+      }
+      .review p {
+        font-size: 12.5px;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+
+      .sticky-bar {
+        padding: 14px 20px 22px;
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .sticky-bar .price {
+        font-family: "JetBrains Mono", monospace;
+      }
+      .sticky-bar .price .amount {
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .sticky-bar .price .unit {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      /* ---------- Buttons ---------- */
+      .btn {
+        border: none;
+        border-radius: 12px;
+        font-family: "Inter";
+        font-weight: 700;
+        font-size: 13.5px;
+        padding: 13px 18px;
+        cursor: pointer;
+        transition:
+          transform 0.12s ease,
+          opacity 0.15s ease;
+      }
+      .btn:active {
+        transform: scale(0.97);
+      }
+      .btn-primary {
+        background: var(--text);
+        color: var(--bg);
+        flex: 1;
+      }
+      [data-theme="dark"] .btn-primary {
+        background: var(--accent);
+        color: #1c2333;
+      }
+      .btn-block {
+        width: 100%;
+      }
+      .btn-outline {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+      .btn-accent {
+        background: var(--accent);
+        color: #3a2a0a;
+      }
+
+      /* ---------- Booking ---------- */
+      .date-row {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        margin-bottom: 18px;
+      }
+      .date-row::-webkit-scrollbar {
+        display: none;
+      }
+      .date-pill {
+        flex: 0 0 auto;
+        width: 54px;
+        height: 68px;
+        border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        cursor: pointer;
+      }
+      .date-pill .d {
+        font-size: 10.5px;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .date-pill .n {
+        font-family: "Fraunces", serif;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .date-pill.active {
+        background: var(--text);
+        border-color: var(--text);
+      }
+      .date-pill.active .d,
+      .date-pill.active .n {
+        color: var(--bg);
+      }
+
+      .slot-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .slot {
+        padding: 11px 0;
+        text-align: center;
+        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .slot.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #3a2a0a;
+      }
+
+      .summary-card {
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px;
+        margin-bottom: 18px;
+      }
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        padding: 5px 0;
+      }
+      .summary-row span:first-child {
+        color: var(--text-muted);
+      }
+      .summary-row span:last-child {
+        font-weight: 600;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .confirm-view {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 60px 12px 0;
+      }
+      .confirm-view .check-circle {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: var(--success-soft);
+        color: var(--success);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+      }
+      .confirm-view .check-circle svg {
+        width: 30px;
+        height: 30px;
+      }
+      .confirm-view h2 {
+        font-family: "Fraunces", serif;
+        font-size: 20px;
+        margin-bottom: 6px;
+      }
+      .confirm-view p {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-bottom: 24px;
+        line-height: 1.6;
+      }
+
+      /* ---------- Chat ---------- */
+      .chat-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+      }
+      .chat-item .who {
+        flex: 1;
+        min-width: 0;
+      }
+      .chat-item .who .name {
+        font-weight: 600;
+        font-size: 13.5px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .chat-item .who .last {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .chat-item .meta-r {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+      }
+      .chat-item .time {
+        font-size: 10.5px;
+        color: var(--text-muted);
+        font-family: "JetBrains Mono", monospace;
+      }
+      .unread-badge {
+        min-width: 18px;
+        height: 18px;
+        border-radius: 9px;
+        background: var(--accent);
+        color: #3a2a0a;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 5px;
+      }
+      .online-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--success);
+        display: inline-block;
+      }
+
+      .chat-window {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .bubble {
+        max-width: 75%;
+        padding: 10px 13px;
+        border-radius: 16px;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .bubble.them {
+        align-self: flex-start;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-bottom-left-radius: 4px;
+      }
+      .bubble.me {
+        align-self: flex-end;
+        background: var(--text);
+        color: var(--bg);
+        border-bottom-right-radius: 4px;
+      }
+      [data-theme="dark"] .bubble.me {
+        background: var(--accent);
+        color: #1c2333;
+      }
+      .bubble .t {
+        display: block;
+        font-size: 10px;
+        opacity: 0.55;
+        margin-top: 4px;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .chat-input-row {
+        display: flex;
+        gap: 10px;
+        padding: 12px 16px 22px;
+        border-top: 1px solid var(--border);
+        background: var(--surface);
+        align-items: center;
+      }
+      .chat-input-row input {
+        flex: 1;
+        border: 1px solid var(--border);
+        background: var(--surface-2);
+        border-radius: 100px;
+        padding: 11px 16px;
+        font-family: "Inter";
+        font-size: 13px;
+        color: var(--text);
+        outline: none;
+      }
+      .send-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: none;
+        color: #3a2a0a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex: 0 0 auto;
+      }
+      .send-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      /* ---------- Profile ---------- */
+      .profile-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 22px 16px;
+        text-align: center;
+        margin-bottom: 18px;
+        box-shadow: var(--shadow);
+      }
+      .profile-card .avatar {
+        margin: 0 auto 12px;
+      }
+      .profile-card h2 {
+        font-family: "Fraunces", serif;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .profile-card .role {
+        font-size: 12.5px;
+        color: var(--text-muted);
+        margin-top: 3px;
+      }
+      .profile-card .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: var(--success-soft);
+        color: var(--success);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 100px;
+        margin-top: 10px;
+      }
+      .profile-card .badge svg {
+        width: 12px;
+        height: 12px;
+      }
+      .stat-grid {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+      .stat-grid .stat .num {
+        font-family: "Fraunces", serif;
+        font-size: 19px;
+        font-weight: 600;
+      }
+      .stat-grid .stat .lbl {
+        font-size: 10.5px;
+        color: var(--text-muted);
+        margin-top: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .settings-group {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        margin-bottom: 14px;
+      }
+      .settings-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 13.5px;
+        cursor: pointer;
+      }
+      .settings-row:last-child {
+        border-bottom: none;
+      }
+      .settings-row .ic {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        background: var(--surface-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+      }
+      .settings-row .ic svg {
+        width: 15px;
+        height: 15px;
+      }
+      .settings-row .lbl {
+        flex: 1;
+      }
+      .settings-row .chev {
+        color: var(--text-muted);
+      }
+      .settings-row .chev svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .toggle {
+        width: 42px;
+        height: 24px;
+        border-radius: 100px;
+        background: var(--border);
+        position: relative;
+        cursor: pointer;
+        transition: background 0.2s;
+        flex: 0 0 auto;
+      }
+      .toggle.on {
+        background: var(--accent);
+      }
+      .toggle .knob {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        transition: left 0.2s;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+      }
+      .toggle.on .knob {
+        left: 21px;
+      }
+
+      .logout-btn {
+        width: 100%;
+        padding: 13px;
+        border-radius: 12px;
+        background: none;
+        border: 1px solid var(--danger);
+        color: var(--danger);
+        font-weight: 700;
+        font-size: 13.5px;
+        cursor: pointer;
+        margin-bottom: 20px;
+      }
+
+      /* ---------- Tab bar ---------- */
+      .tab-bar {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 0 24px;
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        position: relative;
+        z-index: 30;
+      }
+      .tab-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        color: var(--tab-inactive);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 10.5px;
+        font-family: "Inter";
+        font-weight: 600;
+        padding: 4px 14px;
+      }
+      .tab-item svg {
+        width: 21px;
+        height: 21px;
+      }
+      .tab-item.active {
+        color: var(--accent);
+      }
+
+      /* ---------- FAB ---------- */
+      .fab {
+        position: absolute;
+        right: 20px;
+        bottom: 96px;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: #3a2a0a;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 12px 24px -10px rgba(226, 163, 59, 0.6);
+        cursor: pointer;
+        z-index: 25;
+        transition: transform 0.15s;
+      }
+      .fab:active {
+        transform: scale(0.92);
+      }
+      .fab svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      /* ---------- Modal ---------- */
+      .modal-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(12, 14, 20, 0.45);
+        z-index: 90;
+        display: flex;
+        align-items: flex-end;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+      }
+      .modal-overlay.open {
+        opacity: 1;
+        visibility: visible;
+      }
+      .modal-sheet {
+        width: 100%;
+        background: var(--surface);
+        border-radius: 24px 24px 0 0;
+        padding: 18px 20px 26px;
+        transform: translateY(100%);
+        transition: transform 0.25s ease;
+        max-height: 85%;
+        overflow-y: auto;
+      }
+      .modal-overlay.open .modal-sheet {
+        transform: translateY(0);
+      }
+      .modal-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .modal-head h3 {
+        font-family: "Fraunces", serif;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .field-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin: 14px 0 6px;
+      }
+      .field-label:first-child {
+        margin-top: 0;
+      }
+      .text-input,
+      .textarea {
+        width: 100%;
+        border: 1px solid var(--border);
+        background: var(--surface-2);
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-family: "Inter";
+        font-size: 13.5px;
+        color: var(--text);
+        outline: none;
+      }
+      .textarea {
+        resize: none;
+        height: 80px;
+      }
+      .modal-chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      /* misc */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-muted);
+      }
+      .empty-state svg {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 14px;
+        color: var(--text-muted);
+      }
+      .empty-state h3 {
+        font-family: "Fraunces", serif;
+        color: var(--text);
+        font-size: 16px;
+        margin-bottom: 6px;
+      }
+      .empty-state p {
+        font-size: 12.5px;
+        line-height: 1.6;
+      }
+      .network-deco {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 160px;
+        height: 120px;
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="phone" id="phone">
+      <div class="island"></div>
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="right">
+          <span class="status-dot full"></span
+          ><span class="status-dot full"></span
+          ><span class="status-dot full"></span><span class="status-dot"></span>
+        </div>
+      </div>
+
+      <div class="screens" id="screens">
+        <!-- ===================== FEED ===================== -->
+        <section class="screen active" data-screen="feed">
+          <div class="app-header">
+            <div class="title-group">
+              <div>
+                <h1>BizConnect</h1>
+                <div class="subtitle">
+                  Where business problems meet expert answers
+                </div>
+              </div>
+            </div>
+            <div class="header-actions">
+              <button class="icon-btn" id="theme-toggle" title="Toggle theme">
+                <svg
+                  id="theme-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <path
+                    d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+                  ></path>
+                </svg>
+              </button>
+              <button class="icon-btn">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="screen-content">
+            <div class="chip-row" id="feed-chips">
+              <div class="chip active" data-cat="All">All</div>
+              <div class="chip" data-cat="Startup">Startup</div>
+              <div class="chip" data-cat="Finance">Finance</div>
+              <div class="chip" data-cat="Marketing">Marketing</div>
+              <div class="chip" data-cat="Legal">Legal</div>
+              <div class="chip" data-cat="Operations">Operations</div>
+              <div class="chip" data-cat="HR">HR</div>
+              <div class="chip" data-cat="Sales">Sales</div>
+            </div>
+            <div id="feed-list"></div>
+          </div>
+          <button class="fab" id="fab-compose">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 5v14M5 12h14"></path>
+            </svg>
+          </button>
+        </section>
+
+        <!-- ===================== MARKETPLACE ===================== -->
+        <section class="screen" data-screen="marketplace">
+          <div class="app-header">
+            <div>
+              <h1>Advisors</h1>
+              <div class="subtitle">Book a session with a vetted expert</div>
+            </div>
+          </div>
+          <div class="screen-content">
+            <div class="search-bar">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              <input
+                type="text"
+                id="advisor-search"
+                placeholder="Search by name or expertise"
+              />
+            </div>
+            <div class="chip-row" id="advisor-chips">
+              <div class="chip active" data-cat="All">All</div>
+              <div class="chip" data-cat="Strategy">Strategy</div>
+              <div class="chip" data-cat="Startup Mentor">Startup Mentor</div>
+              <div class="chip" data-cat="Marketing">Marketing</div>
+              <div class="chip" data-cat="Finance">Finance</div>
+              <div class="chip" data-cat="Legal">Legal</div>
+              <div class="chip" data-cat="Sales">Sales</div>
+              <div class="chip" data-cat="Tech">Tech</div>
+            </div>
+            <div id="advisor-list"></div>
+          </div>
+        </section>
+
+        <!-- ===================== ADVISOR DETAIL ===================== -->
+        <section class="screen" data-screen="advisor">
+          <div class="back-row">
+            <div class="back-btn" data-back>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </div>
+            <h1>Advisor Profile</h1>
+          </div>
+          <div class="screen-content" id="advisor-detail-content"></div>
+          <div class="sticky-bar">
+            <div class="price">
+              <div class="amount" id="advisor-detail-rate">$0</div>
+              <div class="unit">per hour</div>
+            </div>
+            <button class="btn btn-primary" id="book-btn">
+              Book consultation
+            </button>
+          </div>
+        </section>
+
+        <!-- ===================== BOOKING ===================== -->
+        <section class="screen" data-screen="booking">
+          <div class="back-row">
+            <div class="back-btn" data-back>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </div>
+            <h1 id="booking-title">Book consultation</h1>
+          </div>
+          <div class="screen-content">
+            <div id="booking-form">
+              <div class="section-label">Select a date</div>
+              <div class="date-row" id="date-row"></div>
+              <div class="section-label">Available times</div>
+              <div class="slot-grid" id="slot-grid"></div>
+              <div class="section-label">Summary</div>
+              <div class="summary-card">
+                <div class="summary-row">
+                  <span>Advisor</span><span id="sum-advisor">—</span>
+                </div>
+                <div class="summary-row">
+                  <span>Date</span><span id="sum-date">—</span>
+                </div>
+                <div class="summary-row">
+                  <span>Time</span><span id="sum-time">—</span>
+                </div>
+                <div class="summary-row">
+                  <span>Rate</span><span id="sum-rate">—</span>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-block" id="confirm-booking">
+                Confirm &amp; pay
+              </button>
+            </div>
+            <div
+              id="booking-confirm"
+              class="confirm-view"
+              style="display: none"
+            >
+              <div class="check-circle">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+              </div>
+              <h2>Booking confirmed</h2>
+              <p>
+                Your consultation is set. A calendar invite and Stripe receipt
+                have been sent to your email — the advisor will confirm shortly.
+              </p>
+              <button class="btn btn-primary btn-block" id="booking-done">
+                Back to advisors
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== CHAT LIST ===================== -->
+        <section class="screen" data-screen="chat-list">
+          <div class="app-header">
+            <div>
+              <h1>Messages</h1>
+              <div class="subtitle">Your conversations &amp; groups</div>
+            </div>
+          </div>
+          <div class="screen-content">
+            <div id="chat-list"></div>
+          </div>
+        </section>
+
+        <!-- ===================== CHAT CONVERSATION ===================== -->
+        <section class="screen" data-screen="chat-conversation">
+          <div class="back-row">
+            <div class="back-btn" data-back>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </div>
+            <div class="avatar sm" id="conv-avatar">??</div>
+            <div style="flex: 1; min-width: 0">
+              <h1 id="conv-name" style="font-size: 14.5px">Name</h1>
+              <div class="subtitle" id="conv-status">online</div>
+            </div>
+          </div>
+          <div class="chat-window" id="chat-window"></div>
+          <div class="chat-input-row">
+            <input type="text" id="chat-input" placeholder="Message…" />
+            <button class="send-btn" id="chat-send">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M22 2 11 13M22 2 15 22l-4-9-9-4 20-7z"></path>
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- ===================== PROFILE ===================== -->
+        <section class="screen" data-screen="profile">
+          <div class="app-header">
+            <div><h1>Profile</h1></div>
+          </div>
+          <div class="screen-content">
+            <div class="profile-card">
+              <div
+                class="avatar lg"
+                style="
+                  background: #3e7c74;
+                  margin-left: auto;
+                  margin-right: auto;
+                "
+              >
+                JL
+              </div>
+              <h2>Jordan Lee</h2>
+              <div class="role">
+                Founder &amp; CEO, Northwind Robotics · Kathmandu, NP
+              </div>
+              <div class="badge">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+                Verified Business
+              </div>
+              <div class="stat-grid">
+                <div class="stat">
+                  <div class="num">28</div>
+                  <div class="lbl">Posts</div>
+                </div>
+                <div class="stat">
+                  <div class="num">512</div>
+                  <div class="lbl">Connections</div>
+                </div>
+                <div class="stat">
+                  <div class="num">6</div>
+                  <div class="lbl">Bookings</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-label">Account</div>
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="ic">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                </div>
+                <div class="lbl">Edit profile</div>
+                <div class="chev">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 18l6-6-6-6"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="settings-row">
+                <div class="ic">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="1" y="4" width="22" height="16" rx="2"></rect>
+                    <path d="M1 10h22"></path>
+                  </svg>
+                </div>
+                <div class="lbl">Payment methods</div>
+                <div class="chev">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 18l6-6-6-6"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="settings-row">
+                <div class="ic">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M3 3h18v13H7l-4 4V3z"></path>
+                  </svg>
+                </div>
+                <div class="lbl">My groups</div>
+                <div class="chev">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 18l6-6-6-6"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-label">Preferences</div>
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="ic" id="profile-theme-ic">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path
+                      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="lbl">Dark mode</div>
+                <div class="toggle" id="profile-theme-toggle">
+                  <div class="knob"></div>
+                </div>
+              </div>
+              <div class="settings-row">
+                <div class="ic">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"
+                    ></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                  </svg>
+                </div>
+                <div class="lbl">Push notifications</div>
+                <div class="toggle on" id="notif-toggle">
+                  <div class="knob"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-label">Support</div>
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="ic">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <path d="M12 17h.01"></path>
+                  </svg>
+                </div>
+                <div class="lbl">Help &amp; support</div>
+                <div class="chev">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 18l6-6-6-6"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <button class="logout-btn">Log out</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===================== TAB BAR ===================== -->
+      <div class="tab-bar">
+        <button class="tab-item active" data-tab="feed">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <path d="M9 22V12h6v10"></path>
+          </svg>
+          Home
+        </button>
+        <button class="tab-item" data-tab="marketplace">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+            <path d="M11 8v3l2 1"></path>
+          </svg>
+          Advisors
+        </button>
+        <button class="tab-item" data-tab="chat-list">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+            ></path>
+          </svg>
+          Chat
+        </button>
+        <button class="tab-item" data-tab="profile">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          Profile
+        </button>
+      </div>
+
+      <!-- ===================== COMPOSE MODAL ===================== -->
+      <div class="modal-overlay" id="compose-overlay">
+        <div class="modal-sheet">
+          <div class="modal-head">
+            <h3>Share a business problem</h3>
+            <div class="icon-btn" id="compose-close">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M18 6 6 18M6 6l12 12"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="field-label">Category</div>
+          <div class="modal-chips" id="compose-cats">
+            <div class="chip active" data-cat="Startup">Startup</div>
+            <div class="chip" data-cat="Finance">Finance</div>
+            <div class="chip" data-cat="Marketing">Marketing</div>
+            <div class="chip" data-cat="Legal">Legal</div>
+            <div class="chip" data-cat="Operations">Operations</div>
+            <div class="chip" data-cat="HR">HR</div>
+          </div>
+          <div class="field-label">Title</div>
+          <input
+            class="text-input"
+            id="compose-title"
+            placeholder="What's the headline of your problem?"
+          />
+          <div class="field-label">Details</div>
+          <textarea
+            class="textarea"
+            id="compose-body"
+            placeholder="Give the community context — numbers, what you've tried, what kind of advice you need…"
+          ></textarea>
+          <div style="height: 16px"></div>
+          <button class="btn btn-primary btn-block" id="compose-submit">
+            Post to community
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ---------------- Data ----------------
+      const palette = [
+        "#3E7C74",
+        "#E2A33B",
+        "#5C7CE8",
+        "#C2685A",
+        "#7C5CE8",
+        "#4FA3A0",
+        "#D18A3E",
+        "#5E8C5C",
+      ];
+      const initialsColor = (s) =>
+        palette[
+          Math.abs(s.split("").reduce((a, c) => a + c.charCodeAt(0), 0)) %
+            palette.length
+        ];
+
+      const posts = [
+        {
+          id: 1,
+          author: "Maria Chen",
+          role: "Founder, Loomwell · Startup",
+          cat: "Startup",
+          time: "2h",
+          title: "Raise a seed round now, or bootstrap for 6 more months?",
+          body: "We have 14 months of runway and 8% MoM growth. A fund offered a term sheet at a fair valuation, but I worry about diluting too early. Anyone navigated this trade-off recently?",
+          likes: 34,
+          comments: 12,
+        },
+        {
+          id: 2,
+          author: "Devon Park",
+          role: "Head of Growth, Fenwick · Marketing",
+          cat: "Marketing",
+          time: "4h",
+          title: "CAC is up 40% QoQ on paid social — what is working for you?",
+          body: "Meta CPMs have crept up across our verticals. We are testing creator partnerships and owned content as a counterweight. Curious what channels are still efficient for B2B SaaS.",
+          likes: 51,
+          comments: 23,
+        },
+        {
+          id: 3,
+          author: "Asha Verma",
+          role: "Co-founder, Driftwood · Legal",
+          cat: "Legal",
+          time: "7h",
+          title:
+            "How should we structure a co-founder equity split after 18 months?",
+          body: "One co-founder stepped back to part-time for family reasons. We want a fair re-split with vesting that reflects the new reality without souring the relationship.",
+          likes: 19,
+          comments: 8,
+        },
+        {
+          id: 4,
+          author: "Tomas Reyes",
+          role: "COO, Marlow Goods · Operations",
+          cat: "Operations",
+          time: "9h",
+          title: "Churn spiked after a pricing change — how do you message it?",
+          body: "We moved from flat pricing to usage-based last month and lost 6% of accounts in two weeks. Looking for examples of grandfathering or migration messaging that worked well.",
+          likes: 27,
+          comments: 15,
+        },
+        {
+          id: 5,
+          author: "Priya Nair",
+          role: "Founder, Sundial Foods · Finance",
+          cat: "Finance",
+          time: "1d",
+          title: "Hiring our first finance lead: fractional CFO vs full-time?",
+          body: "We are at $1.8M ARR and about to raise a Series A. Trying to decide whether a fractional CFO can carry us through diligence or if it is time for a full-time hire.",
+          likes: 42,
+          comments: 19,
+        },
+        {
+          id: 6,
+          author: "Owen Ratcliffe",
+          role: "VP Sales, Brightline · Sales",
+          cat: "Sales",
+          time: "1d",
+          title:
+            "Outbound reply rates dropped after switching CRMs — anyone else?",
+          body: "Since migrating from HubSpot to a newer CRM, our sequence reply rates fell almost in half. Domain reputation looks fine. Wondering if anyone has debugged something similar.",
+          likes: 16,
+          comments: 6,
+        },
+      ];
+
+      const advisors = [
+        {
+          id: 1,
+          name: "Helena Brooks",
+          role: "Business Strategy · Ex-McKinsey",
+          cat: "Strategy",
+          rate: 180,
+          rating: 4.9,
+          reviews: 212,
+          years: 14,
+          exp: 14,
+          tags: ["Strategy", "Ops", "M&A"],
+          bio: "Helena spent 14 years in strategy consulting before advising over 80 founders on growth strategy, market entry, and operating model design. She specializes in turning messy 0-to-1 plans into executable roadmaps.",
+          reviewList: [
+            {
+              name: "Marco D.",
+              stars: 5,
+              text: "Cut straight through our roadmap chaos in one session. Worth every dollar.",
+            },
+            {
+              name: "Lena T.",
+              stars: 5,
+              text: "Gave us a framework for prioritizing markets that we still use today.",
+            },
+          ],
+        },
+        {
+          id: 2,
+          name: "Marcus Webb",
+          role: "Startup Mentor · Fundraising",
+          cat: "Startup Mentor",
+          rate: 150,
+          rating: 4.8,
+          reviews: 165,
+          years: 11,
+          exp: 11,
+          tags: ["Fundraising", "Pitch", "Seed"],
+          bio: "Marcus has raised three seed rounds himself and now coaches early-stage founders on narrative, deck design, and investor targeting. He has reviewed 400+ decks and run mock pitch sessions with YC alumni.",
+          reviewList: [
+            {
+              name: "Priya N.",
+              stars: 5,
+              text: "Reworked our deck narrative — closed our round three weeks later.",
+            },
+            {
+              name: "Sam K.",
+              stars: 4,
+              text: "Direct, practical feedback. No fluff.",
+            },
+          ],
+        },
+        {
+          id: 3,
+          name: "Aiko Tanaka",
+          role: "Marketing & Growth",
+          cat: "Marketing",
+          rate: 120,
+          rating: 4.9,
+          reviews: 98,
+          years: 9,
+          exp: 9,
+          tags: ["Growth", "Paid Social", "SEO"],
+          bio: "Aiko has led growth at two B2B SaaS companies through Series B and now helps founders build full-funnel acquisition systems, from positioning to paid channels to lifecycle email.",
+          reviewList: [
+            {
+              name: "Devon P.",
+              stars: 5,
+              text: "Helped us cut CAC by 30% in six weeks with a channel audit.",
+            },
+            {
+              name: "Wei L.",
+              stars: 5,
+              text: "Best growth audit we have had — actionable from day one.",
+            },
+          ],
+        },
+        {
+          id: 4,
+          name: "Daniel Ofori",
+          role: "Finance · Fractional CFO",
+          cat: "Finance",
+          rate: 200,
+          rating: 5.0,
+          reviews: 74,
+          years: 16,
+          exp: 16,
+          tags: ["Fundraising", "Modeling", "FP&A"],
+          bio: "Daniel has served as fractional CFO for a dozen venture-backed companies, building financial models, leading diligence, and setting up the FP&A function founders need before a Series A.",
+          reviewList: [
+            {
+              name: "Priya N.",
+              stars: 5,
+              text: "Our model finally matched reality. Investors noticed immediately.",
+            },
+            {
+              name: "Tomas R.",
+              stars: 5,
+              text: "Saved us from a cash crunch we did not see coming.",
+            },
+          ],
+        },
+        {
+          id: 5,
+          name: "Renee Castillo",
+          role: "Legal Advisor · Startup Law",
+          cat: "Legal",
+          rate: 175,
+          rating: 4.7,
+          reviews: 54,
+          years: 12,
+          exp: 12,
+          tags: ["Equity", "Contracts", "IP"],
+          bio: "Renee practiced startup and venture law for over a decade and now advises founders on cap tables, founder agreements, equity disputes, and contract review without the big-firm price tag.",
+          reviewList: [
+            {
+              name: "Asha V.",
+              stars: 5,
+              text: "Walked us through a co-founder split with empathy and clear options.",
+            },
+            {
+              name: "Noor H.",
+              stars: 4,
+              text: "Thorough contract review, fast turnaround.",
+            },
+          ],
+        },
+        {
+          id: 6,
+          name: "Sam Whitfield",
+          role: "Sales Coach · B2B",
+          cat: "Sales",
+          rate: 110,
+          rating: 4.6,
+          reviews: 88,
+          years: 8,
+          exp: 8,
+          tags: ["Outbound", "Pipeline", "Coaching"],
+          bio: "Sam built and trained outbound teams at three B2B startups and now runs hands-on coaching for founder-led sales teams, focused on pipeline hygiene, messaging, and call reviews.",
+          reviewList: [
+            {
+              name: "Owen R.",
+              stars: 5,
+              text: "Rebuilt our sequence messaging — replies doubled in two weeks.",
+            },
+            {
+              name: "Maria C.",
+              stars: 4,
+              text: "Practical role-play sessions that actually changed our calls.",
+            },
+          ],
+        },
+      ];
+
+      let conversations = [
+        {
+          id: 1,
+          name: "Helena Brooks",
+          cat: "Strategy",
+          online: true,
+          unread: 2,
+          messages: [
+            {
+              from: "them",
+              text: "Hi Jordan, looking forward to our strategy session on Thursday.",
+              time: "10:02",
+            },
+            {
+              from: "them",
+              text: "I took a look at the materials you sent — lots to work with.",
+              time: "10:03",
+            },
+            {
+              from: "me",
+              text: "Great! I will also bring our latest cohort data.",
+              time: "10:30",
+            },
+            {
+              from: "them",
+              text: "Perfect, that will help a lot. See you then!",
+              time: "10:42",
+            },
+          ],
+        },
+        {
+          id: 2,
+          name: "Marcus Webb",
+          cat: "Startup Mentor",
+          online: false,
+          unread: 0,
+          messages: [
+            {
+              from: "them",
+              text: "Sent you the revised deck template — check slide 6.",
+              time: "Yesterday",
+            },
+            {
+              from: "me",
+              text: "Got it, this framing is much clearer. Thank you!",
+              time: "Yesterday",
+            },
+          ],
+        },
+        {
+          id: 3,
+          name: "Startup Founders Circle",
+          cat: "Group · 482 members",
+          online: false,
+          unread: 5,
+          messages: [
+            {
+              from: "them",
+              text: "Welcome to the group! Introduce yourself and what you are building.",
+              time: "Mon",
+            },
+            {
+              from: "them",
+              text: "Anyone going to the founder meetup next week?",
+              time: "Tue",
+            },
+            {
+              from: "me",
+              text: "I will be there — happy to grab coffee beforehand.",
+              time: "Tue",
+            },
+          ],
+        },
+      ];
+
+      // ---------------- Helpers ----------------
+      function initials(name) {
+        return name
+          .split(" ")
+          .map((p) => p[0])
+          .slice(0, 2)
+          .join("")
+          .toUpperCase();
+      }
+      function avatarEl(name, size = "") {
+        const cls = "avatar" + (size ? " " + size : "");
+        return `<div class="${cls}" style="background:${initialsColor(name)}">${initials(name)}</div>`;
+      }
+      function starIcon() {
+        return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+      }
+
+      // ---------------- Render: Feed ----------------
+      function renderFeed(filter = "All") {
+        const list = document.getElementById("feed-list");
+        list.innerHTML = posts
+          .filter((p) => filter === "All" || p.cat === filter)
+          .map(
+            (p) => `
+      <div class="post-card" data-id="${p.id}">
+        <div class="meta">
+          ${avatarEl(p.author, "sm")}
+          <div class="who">
+            <div class="name">${p.author}</div>
+            <div class="sub">${p.role} · ${p.time} ago</div>
+          </div>
+          <div class="cat-tag">${p.cat}</div>
+        </div>
+        <h3>${p.title}</h3>
+        <p>${p.body}</p>
+        <div class="post-actions">
+          <button class="like-btn" data-likes="${p.likes}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21l7.78-7.55 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            <span>${p.likes}</span>
+          </button>
+          <button>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            <span>${p.comments}</span>
+          </button>
+          <div class="grow"></div>
+          <button class="save-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+          </button>
+          <button>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"></path></svg>
+          </button>
+        </div>
+      </div>`,
+          )
+          .join("");
+
+        list.querySelectorAll(".like-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const liked = btn.classList.toggle("liked");
+            const span = btn.querySelector("span");
+            let n = parseInt(btn.dataset.likes, 10);
+            span.textContent = liked ? n + 1 : n;
+          });
+        });
+        list.querySelectorAll(".save-btn").forEach((btn) => {
+          btn.addEventListener("click", () => btn.classList.toggle("saved"));
+        });
+      }
+
+      // ---------------- Render: Marketplace ----------------
+      function renderAdvisors() {
+        const search = document
+          .getElementById("advisor-search")
+          .value.toLowerCase();
+        const activeCat = document.querySelector("#advisor-chips .chip.active")
+          .dataset.cat;
+        const list = document.getElementById("advisor-list");
+        const filtered = advisors.filter((a) => {
+          const matchCat =
+            activeCat === "All" ||
+            a.cat === activeCat ||
+            a.tags.includes(activeCat);
+          const matchSearch =
+            !search ||
+            a.name.toLowerCase().includes(search) ||
+            a.tags.join(" ").toLowerCase().includes(search) ||
+            a.role.toLowerCase().includes(search);
+          return matchCat && matchSearch;
+        });
+        if (!filtered.length) {
+          list.innerHTML = `<div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <h3>No advisors found</h3><p>Try a different search term or category.</p></div>`;
+          return;
+        }
+        list.innerHTML = filtered
+          .map(
+            (a) => `
+      <div class="advisor-card" data-id="${a.id}">
+        <div class="main">
+          <div class="top">
+            ${avatarEl(a.name)}
+            <div>
+              <div class="name">${a.name}</div>
+              <div class="role">${a.role}</div>
+            </div>
+          </div>
+          <div class="tags">${a.tags.map((t) => `<div class="tag">${t}</div>`).join("")}</div>
+          <div class="rating">${starIcon()} ${a.rating} <span class="muted">(${a.reviews}) · ${a.years} yrs</span></div>
+        </div>
+        <div class="stub">
+          <div class="rate">$${a.rate}</div>
+          <div class="rate-unit">per hour</div>
+          <div class="book-label">Book →</div>
+        </div>
+      </div>`,
+          )
+          .join("");
+
+        list.querySelectorAll(".advisor-card").forEach((card) => {
+          card.addEventListener("click", () => {
+            openAdvisor(parseInt(card.dataset.id, 10));
+          });
+        });
+      }
+
+      // ---------------- Advisor detail ----------------
+      let currentAdvisor = null;
+      function openAdvisor(id) {
+        currentAdvisor = advisors.find((a) => a.id === id);
+        const c = document.getElementById("advisor-detail-content");
+        c.innerHTML = `
+      <div class="detail-hero">
+        ${avatarEl(currentAdvisor.name, "lg")}
+        <h2>${currentAdvisor.name}</h2>
+        <div class="role">${currentAdvisor.role}</div>
+        <div class="detail-stats">
+          <div class="stat"><div class="num">${starIcon()} ${currentAdvisor.rating}</div><div class="lbl">${currentAdvisor.reviews} reviews</div></div>
+          <div class="stat"><div class="num">${currentAdvisor.years}</div><div class="lbl">Years exp.</div></div>
+          <div class="stat"><div class="num">$${currentAdvisor.rate}</div><div class="lbl">Per hour</div></div>
+        </div>
+      </div>
+      <div class="section-label">About</div>
+      <p class="bio">${currentAdvisor.bio}</p>
+      <div class="section-label">Expertise</div>
+      <div class="tags" style="margin-bottom:16px;">${currentAdvisor.tags.map((t) => `<div class="tag">${t}</div>`).join("")}</div>
+      <div class="section-label">Recent reviews</div>
+      ${currentAdvisor.reviewList
+        .map(
+          (r) => `
+        <div class="review">
+          <div class="rhead"><div class="rname">${r.name}</div><div class="stars">${Array.from(
+            { length: r.stars },
+          )
+            .map(() => starIcon())
+            .join("")}</div></div>
+          <p>${r.text}</p>
+        </div>`,
+        )
+        .join("")}
+    `;
+        document.getElementById("advisor-detail-rate").textContent =
+          "$" + currentAdvisor.rate;
+        navigateTo("advisor");
+      }
+
+      // ---------------- Booking ----------------
+      let selectedDateIdx = 0;
+      let selectedSlot = null;
+      const slots = [
+        "9:00 AM",
+        "10:30 AM",
+        "1:00 PM",
+        "2:30 PM",
+        "4:00 PM",
+        "5:30 PM",
+      ];
+
+      function buildBookingScreen() {
+        document.getElementById("booking-title").textContent =
+          "Book " + currentAdvisor.name.split(" ")[0];
+        document.getElementById("sum-advisor").textContent =
+          currentAdvisor.name;
+        document.getElementById("sum-rate").textContent =
+          "$" + currentAdvisor.rate + "/hr";
+        selectedSlot = null;
+        selectedDateIdx = 0;
+
+        const dateRow = document.getElementById("date-row");
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const today = new Date();
+        let html = "";
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(today);
+          d.setDate(today.getDate() + i);
+          html += `<div class="date-pill ${i === 0 ? "active" : ""}" data-idx="${i}">
+        <div class="d">${days[d.getDay()]}</div><div class="n">${d.getDate()}</div></div>`;
+        }
+        dateRow.innerHTML = html;
+        dateRow.querySelectorAll(".date-pill").forEach((p) => {
+          p.addEventListener("click", () => {
+            dateRow
+              .querySelectorAll(".date-pill")
+              .forEach((x) => x.classList.remove("active"));
+            p.classList.add("active");
+            selectedDateIdx = parseInt(p.dataset.idx, 10);
+            updateSummary();
+          });
+        });
+
+        const slotGrid = document.getElementById("slot-grid");
+        slotGrid.innerHTML = slots
+          .map((s) => `<div class="slot" data-slot="${s}">${s}</div>`)
+          .join("");
+        slotGrid.querySelectorAll(".slot").forEach((s) => {
+          s.addEventListener("click", () => {
+            slotGrid
+              .querySelectorAll(".slot")
+              .forEach((x) => x.classList.remove("active"));
+            s.classList.add("active");
+            selectedSlot = s.dataset.slot;
+            updateSummary();
+          });
+        });
+
+        document.getElementById("booking-form").style.display = "";
+        document.getElementById("booking-confirm").style.display = "none";
+        updateSummary();
+      }
+
+      function updateSummary() {
+        const today = new Date();
+        const d = new Date(today);
+        d.setDate(today.getDate() + selectedDateIdx);
+        const months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        document.getElementById("sum-date").textContent =
+          `${months[d.getMonth()]} ${d.getDate()}`;
+        document.getElementById("sum-time").textContent = selectedSlot || "—";
+      }
+
+      document.getElementById("book-btn").addEventListener("click", () => {
+        buildBookingScreen();
+        navigateTo("booking");
+      });
+
+      document
+        .getElementById("confirm-booking")
+        .addEventListener("click", () => {
+          if (!selectedSlot) {
+            const grid = document.getElementById("slot-grid");
+            grid.style.animation = "none";
+            grid.offsetHeight;
+            grid.style.outline = "2px solid var(--danger)";
+            grid.style.borderRadius = "10px";
+            setTimeout(() => {
+              grid.style.outline = "none";
+            }, 900);
+            return;
+          }
+          document.getElementById("booking-form").style.display = "none";
+          document.getElementById("booking-confirm").style.display = "flex";
+        });
+      document
+        .getElementById("booking-done")
+        .addEventListener("click", () => navigateTo("marketplace"));
+
+      // ---------------- Chat ----------------
+      function renderChatList() {
+        const list = document.getElementById("chat-list");
+        list.innerHTML = conversations
+          .map((c) => {
+            const last = c.messages[c.messages.length - 1];
+            return `<div class="chat-item" data-id="${c.id}">
+        ${avatarEl(c.name)}
+        <div class="who">
+          <div class="name">${c.name} ${c.online ? '<span class="online-dot"></span>' : ""}</div>
+          <div class="last">${last.from === "me" ? "You: " : ""}${last.text}</div>
+        </div>
+        <div class="meta-r">
+          <div class="time">${last.time}</div>
+          ${c.unread ? `<div class="unread-badge">${c.unread}</div>` : ""}
+        </div>
+      </div>`;
+          })
+          .join("");
+        list.querySelectorAll(".chat-item").forEach((item) => {
+          item.addEventListener("click", () =>
+            openConversation(parseInt(item.dataset.id, 10)),
+          );
+        });
+      }
+
+      let currentConvo = null;
+      function openConversation(id) {
+        currentConvo = conversations.find((c) => c.id === id);
+        currentConvo.unread = 0;
+        document.getElementById("conv-avatar").outerHTML = avatarEl(
+          currentConvo.name,
+          "sm",
+        ).replace('class="avatar sm"', 'class="avatar sm" id="conv-avatar"');
+        document.getElementById("conv-name").textContent = currentConvo.name;
+        document.getElementById("conv-status").textContent =
+          currentConvo.cat + (currentConvo.online ? " · online" : "");
+        renderChatWindow();
+        navigateTo("chat-conversation");
+      }
+
+      function renderChatWindow() {
+        const win = document.getElementById("chat-window");
+        win.innerHTML = currentConvo.messages
+          .map(
+            (m) => `
+      <div class="bubble ${m.from === "me" ? "me" : "them"}">${m.text}<span class="t">${m.time}</span></div>
+    `,
+          )
+          .join("");
+        win.scrollTop = win.scrollHeight;
+      }
+
+      document
+        .getElementById("chat-send")
+        .addEventListener("click", sendMessage);
+      document.getElementById("chat-input").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") sendMessage();
+      });
+      function sendMessage() {
+        const input = document.getElementById("chat-input");
+        const text = input.value.trim();
+        if (!text || !currentConvo) return;
+        const now = new Date();
+        const time =
+          now.getHours().toString().padStart(2, "0") +
+          ":" +
+          now.getMinutes().toString().padStart(2, "0");
+        currentConvo.messages.push({ from: "me", text, time });
+        input.value = "";
+        renderChatWindow();
+        renderChatList();
+      }
+
+      // ---------------- Navigation ----------------
+      const navStack = ["feed"];
+      function navigateTo(screen, replaceTab = false) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        document
+          .querySelector(`.screen[data-screen="${screen}"]`)
+          .classList.add("active");
+        if (replaceTab) {
+          navStack.length = 0;
+          navStack.push(screen);
+          document
+            .querySelectorAll(".tab-item")
+            .forEach((t) =>
+              t.classList.toggle("active", t.dataset.tab === screen),
+            );
+        } else {
+          navStack.push(screen);
+        }
+      }
+      document.querySelectorAll(".tab-item").forEach((tab) => {
+        tab.addEventListener("click", () => navigateTo(tab.dataset.tab, true));
+      });
+      document.querySelectorAll("[data-back]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          navStack.pop();
+          const prev = navStack[navStack.length - 1] || "feed";
+          document
+            .querySelectorAll(".screen")
+            .forEach((s) => s.classList.remove("active"));
+          document
+            .querySelector(`.screen[data-screen="${prev}"]`)
+            .classList.add("active");
+        });
+      });
+
+      // ---------------- Chips (feed & advisors) ----------------
+      document.querySelectorAll("#feed-chips .chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          document
+            .querySelectorAll("#feed-chips .chip")
+            .forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+          renderFeed(chip.dataset.cat);
+        });
+      });
+      document.querySelectorAll("#advisor-chips .chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          document
+            .querySelectorAll("#advisor-chips .chip")
+            .forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+          renderAdvisors();
+        });
+      });
+      document
+        .getElementById("advisor-search")
+        .addEventListener("input", renderAdvisors);
+
+      // ---------------- Theme toggle ----------------
+      function setTheme(dark) {
+        const phone = document.getElementById("phone");
+        if (dark) {
+          phone.setAttribute("data-theme", "dark");
+        } else {
+          phone.removeAttribute("data-theme");
+        }
+        document
+          .getElementById("profile-theme-toggle")
+          .classList.toggle("on", dark);
+        document.getElementById("theme-icon").innerHTML = dark
+          ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'
+          : '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>';
+      }
+      let isDark = false;
+      document.getElementById("theme-toggle").addEventListener("click", () => {
+        isDark = !isDark;
+        setTheme(isDark);
+      });
+      document
+        .getElementById("profile-theme-toggle")
+        .addEventListener("click", () => {
+          isDark = !isDark;
+          setTheme(isDark);
+        });
+      document
+        .getElementById("notif-toggle")
+        .addEventListener("click", (e) =>
+          e.currentTarget.classList.toggle("on"),
+        );
+
+      // ---------------- Compose modal ----------------
+      const overlay = document.getElementById("compose-overlay");
+      document
+        .getElementById("fab-compose")
+        .addEventListener("click", () => overlay.classList.add("open"));
+      document
+        .getElementById("compose-close")
+        .addEventListener("click", () => overlay.classList.remove("open"));
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) overlay.classList.remove("open");
+      });
+      document.querySelectorAll("#compose-cats .chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          document
+            .querySelectorAll("#compose-cats .chip")
+            .forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+        });
+      });
+      document
+        .getElementById("compose-submit")
+        .addEventListener("click", () => {
+          const cat = document.querySelector("#compose-cats .chip.active")
+            .dataset.cat;
+          const title =
+            document.getElementById("compose-title").value.trim() ||
+            "Untitled business problem";
+          const body =
+            document.getElementById("compose-body").value.trim() ||
+            "No additional details provided.";
+          posts.unshift({
+            id: Date.now(),
+            author: "Jordan Lee (You)",
+            role: "Founder, Northwind Robotics",
+            cat,
+            time: "now",
+            title,
+            body,
+            likes: 0,
+            comments: 0,
+          });
+          document.getElementById("compose-title").value = "";
+          document.getElementById("compose-body").value = "";
+          document
+            .querySelectorAll("#feed-chips .chip")
+            .forEach((c) => c.classList.remove("active"));
+          document
+            .querySelector('#feed-chips .chip[data-cat="All"]')
+            .classList.add("active");
+          renderFeed("All");
+          overlay.classList.remove("open");
+          navigateTo("feed", true);
+        });
+
+      // ---------------- Init ----------------
+      renderFeed();
+      renderAdvisors();
+      renderChatList();
+    </script>
+  </body>
+</html>
