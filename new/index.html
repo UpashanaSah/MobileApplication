@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BusinessCalls</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="phone" id="phone">
+      <div class="island"></div>
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="right">
+          <span class="status-dot full"></span
+          ><span class="status-dot full"></span
+          ><span class="status-dot full"></span><span class="status-dot"></span>
+        </div>
+      </div>
+      <div class="screens" id="screens">
+
+        <!-- ===================== FEED ===================== -->
+        <section class="screen active" data-screen="feed">
+          <div class="app-header">
+            <div class="title-group">
+              <div>
+                <h1>BusinessCalls</h1>
+                <div class="subtitle">Where business problems meet expert answers</div>
+              </div>
+            </div>
+            <div class="header-actions">
+              <button class="icon-btn" id="theme-toggle" title="Toggle theme">
+                <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                </svg>
+              </button>
+              <button class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="screen-content">
+            <div class="chip-row" id="feed-chips">
+              <div class="chip active" data-cat="All">All</div>
+              <div class="chip" data-cat="Startup">Startup</div>
+              <div class="chip" data-cat="Finance">Finance</div>
+              <div class="chip" data-cat="Marketing">Marketing</div>
+              <div class="chip" data-cat="Legal">Legal</div>
+              <div class="chip" data-cat="Operations">Operations</div>
+              <div class="chip" data-cat="HR">HR</div>
+              <div class="chip" data-cat="Sales">Sales</div>
+            </div>
+            <div id="feed-list"></div>
+          </div>
+          <button class="fab" id="fab-compose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14M5 12h14"></path>
+            </svg>
+          </button>
+        </section>
+
+        <!-- ===================== MARKETPLACE ===================== -->
+        <section class="screen" data-screen="marketplace">
+          <div class="app-header">
+            <div>
+              <h1>Advisors</h1>
+              <div class="subtitle">Book a session with a vetted expert</div>
+            </div>
+          </div>
+          <div class="screen-content">
+            <div class="search-bar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              <input type="text" id="advisor-search" placeholder="Search by name or expertise" />
+            </div>
+            <div class="chip-row" id="advisor-chips">
+              <div class="chip active" data-cat="All">All</div>
+              <div class="chip" data-cat="Strategy">Strategy</div>
+              <div class="chip" data-cat="Startup Mentor">Startup Mentor</div>
+              <div class="chip" data-cat="Marketing">Marketing</div>
+              <div class="chip" data-cat="Finance">Finance</div>
+              <div class="chip" data-cat="Legal">Legal</div>
+              <div class="chip" data-cat="Sales">Sales</div>
+              <div class="chip" data-cat="Tech">Tech</div>
+            </div>
+            <div id="advisor-list"></div>
+          </div>
+        </section>
+
+        <!-- ===================== ADVISOR DETAIL ===================== -->
+        <section class="screen" data-screen="advisor">
+          <div class="back-row">
+            <div class="back-btn" data-back>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </div>
+            <h1>Advisor Profile</h1>
+          </div>
+          <div class="screen-content" id="advisor-detail-content"></div>
+          <div class="sticky-bar">
+            <div class="price">
+              <div class="amount" id="advisor-detail-rate">$0</div>
+              <div class="unit">per hour</div>
+            </div>
+            <button class="btn btn-primary" id="book-btn">Book consultation</button>
+          </div>
+        </section>
+
+        <!-- ===================== BOOKING ===================== -->
+        <section class="screen" data-screen="booking">
+          <div class="back-row">
+            <div class="back-btn" data-back>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </div>
+            <h1 id="booking-title">Book consultation</h1>
+          </div>
+          <div class="screen-content">
+            <div id="booking-form">
+              <div class="section-label">Select a date</div>
+              <div class="date-row" id="date-row"></div>
+              <div class="section-label">Available times</div>
+              <div class="slot-grid" id="slot-grid"></div>
+              <div class="section-label">Summary</div>
+              <div class="summary-card">
+                <div class="summary-row"><span>Advisor</span><span id="sum-advisor">—</span></div>
+                <div class="summary-row"><span>Date</span><span id="sum-date">—</span></div>
+                <div class="summary-row"><span>Time</span><span id="sum-time">—</span></div>
+                <div class="summary-row"><span>Rate</span><span id="sum-rate">—</span></div>
+              </div>
+              <button class="btn btn-primary btn-block" id="confirm-booking">Confirm &amp; pay</button>
+            </div>
+            <div id="booking-confirm" class="confirm-view" style="display:none">
+              <div class="check-circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+              </div>
+              <h2>Booking confirmed</h2>
+              <p>Your consultation is set. A calendar invite and Stripe receipt have been sent to your email — the advisor will confirm shortly.</p>
+              <button class="btn btn-primary btn-block" id="booking-done">Back to advisors</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== CHAT LIST ===================== -->
+        <section class="screen" data-screen="chat-list">
+          <div class="app-header">
+            <div>
+              <h1>Messages</h1>
+              <div class="subtitle">Your conversations &amp; groups</div>
+            </div>
+          </div>
+          <div class="screen-content">
+            <div id="chat-list"></div>
+          </div>
+        </section>
+
+        <!-- ===================== CHAT CONVERSATION ===================== -->
+        <section class="screen" data-screen="chat-conversation">
+          <div class="back-row">
+            <div class="back-btn" data-back>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </div>
+            <div class="avatar sm" id="conv-avatar">??</div>
+            <div style="flex:1;min-width:0">
+              <h1 id="conv-name" style="font-size:14.5px">Name</h1>
+              <div class="subtitle" id="conv-status">online</div>
+            </div>
+          </div>
+          <div class="chat-window" id="chat-window"></div>
+          <div class="chat-input-row">
+            <input type="text" id="chat-input" placeholder="Message…" />
+            <button class="send-btn" id="chat-send">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 2 11 13M22 2 15 22l-4-9-9-4 20-7z"></path>
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- ===================== PROFILE ===================== -->
+        <section class="screen" data-screen="profile">
+          <div class="app-header">
+            <div><h1>Profile</h1></div>
+          </div>
+          <div class="screen-content">
+            <div class="profile-card">
+              <div class="avatar lg" style="background:#3e7c74;margin-left:auto;margin-right:auto">JL</div>
+              <h2>Jordan Lee</h2>
+              <div class="role">Founder &amp; CEO, Northwind Robotics · Kathmandu, NP</div>
+              <div class="badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+                Verified Business
+              </div>
+              <div class="stat-grid">
+                <div class="stat"><div class="num">28</div><div class="lbl">Posts</div></div>
+                <div class="stat"><div class="num">512</div><div class="lbl">Connections</div></div>
+                <div class="stat"><div class="num" id="profile-booking-count">6</div><div class="lbl">Bookings</div></div>
+              </div>
+            </div>
+            <div class="section-label">Account</div>
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                <div class="lbl">Edit profile</div>
+                <div class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></div>
+              </div>
+              <div class="settings-row">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"></rect><path d="M1 10h22"></path></svg></div>
+                <div class="lbl">Payment methods</div>
+                <div class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></div>
+              </div>
+              <div class="settings-row">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v13H7l-4 4V3z"></path></svg></div>
+                <div class="lbl">My groups</div>
+                <div class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></div>
+              </div>
+            </div>
+            <div class="section-label">Preferences</div>
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="ic" id="profile-theme-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></div>
+                <div class="lbl">Dark mode</div>
+                <div class="toggle" id="profile-theme-toggle"><div class="knob"></div></div>
+              </div>
+              <div class="settings-row">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
+                <div class="lbl">Push notifications</div>
+                <div class="toggle on" id="notif-toggle"><div class="knob"></div></div>
+              </div>
+            </div>
+            <div class="section-label">Support</div>
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><path d="M12 17h.01"></path></svg></div>
+                <div class="lbl">Help &amp; support</div>
+                <div class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></div>
+              </div>
+            </div>
+            <button class="logout-btn">Log out</button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ===================== TAB BAR ===================== -->
+      <div class="tab-bar">
+        <button class="tab-item active" data-tab="feed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg>
+          Home
+        </button>
+        <button class="tab-item" data-tab="marketplace">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path><path d="M11 8v3l2 1"></path></svg>
+          Advisors
+        </button>
+        <button class="tab-item" data-tab="chat-list">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+          Chat
+        </button>
+        <button class="tab-item" data-tab="profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          Profile
+        </button>
+      </div>
+
+      <!-- ===================== COMPOSE MODAL ===================== -->
+      <div class="modal-overlay" id="compose-overlay">
+        <div class="modal-sheet">
+          <div class="modal-head">
+            <h3>Share a business problem</h3>
+            <div class="icon-btn" id="compose-close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18M6 6l12 12"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="field-label">Category</div>
+          <div class="modal-chips" id="compose-cats">
+            <div class="chip active" data-cat="Startup">Startup</div>
+            <div class="chip" data-cat="Finance">Finance</div>
+            <div class="chip" data-cat="Marketing">Marketing</div>
+            <div class="chip" data-cat="Legal">Legal</div>
+            <div class="chip" data-cat="Operations">Operations</div>
+            <div class="chip" data-cat="HR">HR</div>
+          </div>
+          <div class="field-label">Title</div>
+          <input class="text-input" id="compose-title" placeholder="What's the headline of your problem?" />
+          <div class="field-label">Details</div>
+          <textarea class="textarea" id="compose-body" placeholder="Give the community context — numbers, what you've tried, what kind of advice you need…"></textarea>
+          <div style="height:16px"></div>
+          <button class="btn btn-primary btn-block" id="compose-submit">Post to community</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Firebase CDN — must come before script.js -->
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
